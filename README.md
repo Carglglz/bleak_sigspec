@@ -5,7 +5,15 @@ This package enables characteristic metadata parsing and automatic formatting (b
 This is a requirement for the function `get_char_value` in `bleak.utils`
 
 To install (not published yet)
-`pip install bleak_sigspec`
+
+```
+pip install bleak_sigspec
+```
 
 or to get the latest version
-`pip install https://github.com/Carglglz/test_bleak_sigspec.git`
+
+```
+pip install https://github.com/Carglglz/test_bleak_sigspec.git
+```
+
+
