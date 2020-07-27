@@ -28,13 +28,13 @@ Compatibility with +200 GATT characteristics following [GATT Specifications](htt
 from bleak.utils import get_char_value
 [...]
 37
-				bytes_value = bytes(await client.read_gatt_char(char.uuid))
-				formatted_value = get_char_value(bytes_value, char)
+			bytes_value = bytes(await client.read_gatt_char(char.uuid))
+			formatted_value = get_char_value(bytes_value, char)
 [...]
 43
-				log.info(
-					"Characteristic Name: {0}, Bytes Value: {1}, Formatted
-					Value: {2}".format(char.description, bytes_value, formatted_value))
+			log.info(
+				"Characteristic Name: {0}, Bytes Value: {1}, Formatted
+				Value: {2}".format(char.description, bytes_value, formatted_value))
 
 
 ```
@@ -45,3 +45,16 @@ $ python3 service_explorer.py
 Characteristic Name: Temperature, Bytes Value: b'Z\x16', Formatted Value: {'Temperature':{'Value': 57.22, 'Symbol': 'ºC'}}
 ```
 
+See more at bleak [documentation](https://bleak.readthedocs.io)
+
+### How it works
+
+This function uses the characteristic's name, parsing the respective xml file to get all the value fields. From there it reads the Flags field (if exists) and unpack the bytes accordingly. After that it performs any post-proccesing operation required (e.g. `DecimalExponent`, `Multiplier` etc). Finally it packs the result in a dictionary.
+
+To see more about bytes packing/unpacking in python see: [struct](https://docs.python.org/3/library/struct.html)
+
+
+
+### Future work: Vendor specific or custom characteristics
+
+To format a characteristic value of a Vendor specific or custom characteristic (not defined in GATT specifications) there is a *Characteristic Presentation Format* Descriptor which defines the format of the Characteristic Value. So if this Descriptor is present it is possible to read it and get the characteristic value  format, exponent, unit, name space and description.
