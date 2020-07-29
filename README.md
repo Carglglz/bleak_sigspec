@@ -42,7 +42,10 @@ from bleak.utils import get_char_value
 ```
 $ python3 service_explorer.py
 [...]
-Characteristic Name: Temperature, Bytes Value: b'Z\x16', Formatted Value: {'Temperature':{'Value': 57.22, 'Symbol': 'ºC'}}
+Characteristic Name: Temperature, Bytes Value: b'Z\x16', Formatted Value: {'Temperature': {'Quantity': 'thermodynamic temperature',
+  'Unit': 'degree celsius',
+  'Symbol': '°C',
+  'Value': 57.22}}
 ```
 
 See more at bleak [documentation](https://bleak.readthedocs.io)
