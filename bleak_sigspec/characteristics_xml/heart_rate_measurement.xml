@@ -7,7 +7,7 @@
         <Field name="Flags">
             <Requirement>Mandatory</Requirement>
             <Format>8bit</Format>
-            
+
             <BitField>
                 <Bit index="0" size="1" name="Heart Rate Value Format bit">
                     <Enumerations>
@@ -23,7 +23,7 @@
                         <Enumeration key="3" value="Sensor Contact feature is supported and contact is detected" />
                     </Enumerations>
                 </Bit>
-                
+
                 <Bit index="3" size="1" name="Energy Expended Status bit">
                     <Enumerations>
                         <Enumeration key="0" value="Energy Expended field is not present" />
@@ -46,9 +46,9 @@
             <Requirement>C1</Requirement>
             <Format>uint8</Format>
             <Unit>org.bluetooth.unit.period.beats_per_minute</Unit>
-           
-        </Field>    
-        
+
+        </Field>
+
          <Field name="Heart Rate Measurement Value (uint16)">
               <InformativeText>
                 Note: The format of the Heart Rate Measurement Value field is dependent upon bit 0 of the Flags field.
@@ -56,26 +56,27 @@
             <Requirement>C2</Requirement>
             <Format>uint16</Format>
             <Unit>org.bluetooth.unit.period.beats_per_minute</Unit>
-           
-        </Field>       
-        
+
+        </Field>
+
         <Field name="Energy Expended">
             <InformativeText>The presence of the Energy Expended field is dependent upon bit 3 of the Flags field.</InformativeText>
             <Requirement>C3</Requirement>
             <Format>uint16</Format>
             <Unit>org.bluetooth.unit.energy.joule</Unit>
-           
+            <DecimalExponent>3</DecimalExponent>
+
         </Field>
         <Field name="RR-Interval">
             <InformativeText>
-               <!-- The presence of the RR-Interval field is dependent upon bit 4 of the Flags field. 
-                <p>The RR-Interval value represents the time between two R-Wave detections.</p> 
-                
-                <p>Because several RR-Intervals may be measured between transmissions of the HEART RATE MEASUREMENT characteristic, 
-                multiple RR-Interval sub-fields may be present in the characteristic. The number of RR-Interval sub-fields present 
-                is determined by a combination of the overall length of the characteristic and whether or not the characteristic contains 
+               <!-- The presence of the RR-Interval field is dependent upon bit 4 of the Flags field.
+                <p>The RR-Interval value represents the time between two R-Wave detections.</p>
+
+                <p>Because several RR-Intervals may be measured between transmissions of the HEART RATE MEASUREMENT characteristic,
+                multiple RR-Interval sub-fields may be present in the characteristic. The number of RR-Interval sub-fields present
+                is determined by a combination of the overall length of the characteristic and whether or not the characteristic contains
                 the Energy Expended field.</p>
-                
+
                 <p>Where there are multiple RR-Interval values transmitted in the HEART RATE MEASUREMENT characteristic, the field uses the following format:</p>
                 <p>RR-Interval Value 0 (LSO...MSO), RR-Interval Value 1 (LSO...MSO), RR-Interval Value 2 (LSO...MSO), RR-Interval Value n (LSO...MSO).</p>
                 <p>Where the RR-Interval Value 0 is older than the RR-Interval Value 1.</p>
@@ -86,9 +87,9 @@
             <Format>uint16</Format>
             <Unit>org.bluetooth.unit.time.second</Unit>
             <Description>Resolution of 1/1024 second</Description>
-		
-            
-            
+
+
+
         </Field>
     </Value>
    <Note> <p>The fields in the above table are in the order of LSO to MSO. Where LSO = Least Significant Octet and MSO = Most Significant Octet.</p>
