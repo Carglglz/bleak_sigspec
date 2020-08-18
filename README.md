@@ -1,5 +1,5 @@
 ## bleak_sigspec
-### Characteristics Metadata xml files from SIG Bluetooth
+### Bleak SIG Bluetooth Characteristic Specification Formatter
 
 This package enables characteristic metadata parsing and automatic formatting (bytes unpacking) into the proper characteristic values.
 
