@@ -2,7 +2,6 @@
 ### Characteristics Metadata xml files from SIG Bluetooth
 
 This package enables characteristic metadata parsing and automatic formatting (bytes unpacking) into the proper characteristic values.
-This is a requirement for the function `get_char_value` in `bleak.utils`
 
 To install (not published yet)
 
@@ -25,7 +24,7 @@ Compatibility with +200 GATT characteristics following [GATT Specifications](htt
 `char --> Temperature Characteristic`
 
 ```
-from bleak.utils import get_char_value
+from bleak_sigspec.utils import get_char_value
 [...]
 37
 			bytes_value = bytes(await client.read_gatt_char(char.uuid))
@@ -48,7 +47,7 @@ Characteristic Name: Temperature, Bytes Value: b'Z\x16', Formatted Value: {'Temp
   'Value': 57.22}}
 ```
 
-See more at bleak [documentation](https://bleak.readthedocs.io)
+See more at bleak_sigspec [documentation](https://bleak.readthedocs.io)
 
 ### How it works
 
