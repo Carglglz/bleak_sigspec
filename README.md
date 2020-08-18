@@ -12,7 +12,7 @@ pip install bleak_sigspec
 or to get the latest version
 
 ```
-pip install https://github.com/Carglglz/test_bleak_sigspec.git
+pip install https://github.com/Carglglz/bleak_sigspec.git
 ```
 
 Compatibility with +200 GATT characteristics following [GATT Specifications](https://www.bluetooth.com/specifications/gatt/characteristics/)
