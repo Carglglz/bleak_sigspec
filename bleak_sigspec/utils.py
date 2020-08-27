@@ -1,3 +1,5 @@
+"""Utils to decode binary data from SIG Characteristics"""
+
 import struct
 import xml.etree.ElementTree as ET
 import traceback
@@ -1064,12 +1066,12 @@ def get_char_value(value: bytes, characteristic: Union[BleakGATTCharacteristic,
                    rtn_flags: bool = False,
                    debug: bool = False) -> dict:
     """Given a characteristic and its raw value in bytes,
-    obtain the formatted value as a dict instance:
+        obtain the formatted value as a dict instance:
 
     Args:
-        value (bytes): The result of read_gatt_char().
-        characteristic (BleakGATTCharacteristic, str, CHAR_XML):
-            The characteristic from which get metadata.
+        value (bytes): The result of read_gatt_char()
+        
+        characteristic (BleakGATTCharacteristic, str, CHAR_XML): The characteristic from which get metadata.
         rnt_flags: return the bitflags too if present
         debug: print debug information about bytes unpacking
 

@@ -85,7 +85,7 @@ Contents
    howitworks
    limitations
    futurework
-   api
+   bleak_sigspec
 
 
 License
