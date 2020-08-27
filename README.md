@@ -3,7 +3,7 @@
 
 This package enables characteristic metadata parsing and automatic formatting (bytes unpacking) into the proper characteristic values.
 
-To install (not published yet)
+To install
 
 ```
 pip install bleak_sigspec
