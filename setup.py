@@ -7,11 +7,11 @@ def readme():
 
 
 setup(name='bleak_sigspec',
-      version='0.0.1',
+      version='0.0.2',
       description='Bleak SIG Bluetooth Low Energy Characteristics Specification Formatter',
       long_description=readme(),
       long_description_content_type='text/markdown',
-      url='http://github.com/cgglz/bleak_sigspec',
+      url='http://github.com/Carglglz/bleak_sigspec',
       author='Carlos Gil Gonzalez',
       author_email='carlosgilglez@gmail.com',
       classifiers=[
