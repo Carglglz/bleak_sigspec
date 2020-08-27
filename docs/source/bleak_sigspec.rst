@@ -1,8 +1,10 @@
-===
-API
-===
+bleak\_sigspec package
+======================
 
-bleak\_sigspec.formatter
+Submodules
+----------
+
+bleak\_sigspec.formatter module
 -------------------------------
 
 .. automodule:: bleak_sigspec.formatter
@@ -10,10 +12,18 @@ bleak\_sigspec.formatter
    :undoc-members:
    :show-inheritance:
 
-bleak\_sigspec.utils
+bleak\_sigspec.utils module
 ---------------------------
 
 .. automodule:: bleak_sigspec.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: bleak_sigspec
    :members:
    :undoc-members:
    :show-inheritance:

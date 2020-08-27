@@ -1,4 +1,6 @@
-"""Utils to decode binary data from SIG Characteristics"""
+"""
+Utils to decode binary data from SIG Characteristics
+"""
 
 import struct
 import xml.etree.ElementTree as ET
@@ -156,7 +158,9 @@ DATA_FMT = {
 
 # XML PARSER --> get char tag and return char_xml class
 class CHAR_XML:
-    """Parse characteristic xml file"""
+    """
+    Parse characteristic xml file
+    """
 
     def __init__(self, xml_file, path=CHARS_XML_DIR):
         self._tree = ET.parse(os.path.join(path, xml_file))
@@ -406,7 +410,8 @@ class CHAR_XML:
 
 
 def get_xml_char(characteristic: Union[str, BleakGATTCharacteristic])-> CHAR_XML:
-    """Get characteristic metadata from its xml file
+    """
+    Get characteristic metadata from its xml file
 
     Args:
         characteristic (str, BleakGATTCharacteristic): The name of the
@@ -436,7 +441,8 @@ def get_xml_char(characteristic: Union[str, BleakGATTCharacteristic])-> CHAR_XML
 
 
 def _unpack_data(ctype, data):
-    """Unpack 'data' bytes with 'ctype' equivalent format
+    """
+    Unpack 'data' bytes with 'ctype' equivalent format
     """
     if ctype == "utf8":
         return data.decode("utf8")
@@ -448,7 +454,9 @@ def _unpack_data(ctype, data):
 # BITMASKS
 
 def _complete_bytes(bb):
-    """Make bytes number even"""
+    """
+    Make bytes number even
+    """
     len_bytes = len(bb)
     if (len_bytes % 2) == 0:
         pass
@@ -458,8 +466,10 @@ def _complete_bytes(bb):
 
 
 def _autobitmask(val, total_size, index, size, keymap):
-    """Generate a bitmask and apply it to 'val' bits given the 'total_size',
-        'index', and 'size' of the BitField"""
+    """
+    Generate a bitmask and apply it to 'val' bits given the 'total_size',
+        'index', and 'size' of the BitField
+    """
     _bitmask = eval(
         "0b{}".format("0" * (total_size - (index + size)) + (size * "1") + "0" * index)
     )
@@ -471,8 +481,10 @@ def _autobitmask(val, total_size, index, size, keymap):
 
 
 def _autobitmask_req(val, total_size, index, size, keymap):
-    """Generate a bitmask and apply it to 'val' bits given the 'total_size',
-        'index', and 'size' of the BitField"""
+    """
+    Generate a bitmask and apply it to 'val' bits given the 'total_size',
+        'index', and 'size' of the BitField
+    """
     _bitmask = eval(
         "0b{}".format("0" * (total_size - (index + size)) + (size * "1") + "0" * index)
     )
@@ -491,7 +503,9 @@ def _autobitmask_req(val, total_size, index, size, keymap):
 
 
 def _autoformat(char, val, field_to_unpack=None):
-    """Given a characteristic and 'val' bytes, obtain the BitField values"""
+    """
+    Given a characteristic and 'val' bytes, obtain the BitField values
+    """
     fields = {}
     if not field_to_unpack:
         for field in char.fields:
@@ -567,8 +581,10 @@ def _autoformat(char, val, field_to_unpack=None):
 
 
 def _autoformat_reqs(char, val):
-    """Given a 'char' characteristic and 'val' bytes, obtain the BitField values
-    requirements"""
+    """
+    Given a 'char' characteristic and 'val' bytes, obtain the BitField values
+    requirements
+    """
     fields = {}
     for field in char.fields:
         if "Ctype" in char.fields[field]:
@@ -597,7 +613,9 @@ def _autoformat_reqs(char, val):
 
 # GET FIELD REQUIREMENTS
 def _get_req(char_field):
-    """Get characteristics field requirements"""
+    """
+    Get characteristics field requirements
+    """
     reqs = []
     for key in char_field:
         if "Requirement" in key:
@@ -607,7 +625,9 @@ def _get_req(char_field):
 
 # GET FIELD REFERENCES RECURSIVELY
 def get_ref_char_field(_field, name_field):
-    """Get characteristics field references recursively"""
+    """
+    Get characteristics field references recursively
+    """
     _REFERENCE_TAGS_FIELDS = {}
     _FIELDS_OF_REFERENCED_CHAR = {}
     _REFERENCE_FIELDS = {}
@@ -658,7 +678,9 @@ def _get_plain_ref_fields(fof_refchar):
 # GET FORMATTED VALUE
 
 def _get_single_field(char, val, debug=False):
-    """Get characteristic single field data"""
+    """
+    Get characteristic single field data
+    """
     if debug:
         print("CASE 1: ONE FIELD")
     for field in char.fields:
@@ -715,7 +737,9 @@ def _get_single_field(char, val, debug=False):
 
 
 def _get_multiple_fields(char, val, rtn_flags=False, debug=False):
-    """Get characteristic multiple fields data"""
+    """
+    Get characteristic multiple fields data
+    """
     if debug:
         print("CASE 2: MULTIPLE FIELDS")
     _FLAGS = None
@@ -1065,19 +1089,19 @@ def get_char_value(value: bytes, characteristic: Union[BleakGATTCharacteristic,
                                                        str, CHAR_XML],
                    rtn_flags: bool = False,
                    debug: bool = False) -> dict:
-    """Given a characteristic and its raw value in bytes,
+    """
+    Given a characteristic and its raw value in bytes,
         obtain the formatted value as a dict instance:
 
     Args:
         value (bytes): The result of read_gatt_char()
-        
+
         characteristic (BleakGATTCharacteristic, str, CHAR_XML): The characteristic from which get metadata.
         rnt_flags: return the bitflags too if present
         debug: print debug information about bytes unpacking
 
     Returns:
         Dict instance with the formatted value.
-
     """
 
     # Get characteristic metadata from xml file
@@ -1101,7 +1125,9 @@ def get_char_value(value: bytes, characteristic: Union[BleakGATTCharacteristic,
 
 def pformat_field_value(field_data, field='', sep=',', prnt=True,
                         rtn=False):
-    """Print or return the field value in string format"""
+    """
+    Print or return the field value in string format
+    """
     try:
         field_string_values = ["{} {}".format(field_data['Value'], field_data['Symbol'])]
     except Exception as e:
@@ -1127,7 +1153,9 @@ def pformat_char_value(data,
                        symbols=True,
                        prnt=True,
                        rtn=False):
-    """Print or return the characteristic value in string format"""
+    """
+    Print or return the characteristic value in string format
+    """
     if not custom:
         if not one_line:
             if char:
@@ -1204,7 +1232,9 @@ def pformat_char_value(data,
 
 
 def get_plain_format(field):
-    """Iterates until the last level where Value is"""
+    """
+    Iterates until the last level where Value is
+    """
     val = ""
     for k in field:
         if 'Value' in field[k]:
@@ -1219,7 +1249,9 @@ def get_plain_format(field):
 
 
 def pformat_ref_char_value(char_value):
-    """Print or return the characteristic value in string format"""
+    """
+    Print or return the characteristic value in string format
+    """
     for field in char_value:
         if 'Value' in char_value[field]:
             print(field, char_value[field]['Value'])
@@ -1230,8 +1262,10 @@ def pformat_ref_char_value(char_value):
 
 
 def map_char_value(data, keys=[], string_fmt=False, one_line=True, sep=", "):
-    """Map characteristic value with the given keys, return dict or string
-    format"""
+    """
+    Map characteristic value with the given keys, return dict or string
+    format
+    """
     if keys:
         if not string_fmt:
             return dict(zip(keys, list(data.values())[0]['Value'].values()))
@@ -1245,7 +1279,9 @@ def map_char_value(data, keys=[], string_fmt=False, one_line=True, sep=", "):
 
 
 def dict_char_value(data, raw=False):
-    """Simplify the characteristic value in dict format"""
+    """
+    Simplify the characteristic value in dict format
+    """
     try:
         if raw:
             values = {
@@ -1274,7 +1310,9 @@ def dict_char_value(data, raw=False):
 
 
 def pformat_char_flags(data, sep="\n", prnt=False, rtn=True):
-    """Print or return the characteristic flag in string format"""
+    """
+    Print or return the characteristic flag in string format
+    """
     try:
         char_string_values = [
             ["{}: {}".format(k, v) for k, v in data[key].items()] for key in data
