@@ -47,26 +47,5 @@ Characteristic Name: Temperature, Bytes Value: b'Z\x16', Formatted Value: {'Temp
   'Value': 57.22}}
 ```
 
-See more at bleak_sigspec [documentation](https://bleak-sigspec.readthedocs.io)
+See more at  [bleak_sigspec documentation](https://bleak-sigspec.readthedocs.io)
 
-### How it works
-
-This function uses the characteristic's name, parsing the respective xml file to get all the value fields. From there it reads the Flags field (if exists) and unpack the bytes accordingly. After that it performs any post-proccesing operation required (e.g. `DecimalExponent`, `Multiplier` etc). Finally it packs the result in a dictionary.
-
-To see more about bytes packing/unpacking in python see: [struct](https://docs.python.org/3/library/struct.html)
-
-### Limitations
-
-`get_char_value` may fail, or return unexpected results due to the following reasons:
-
-- The `characteristic` does not exist in `bleak` or the *xml* file in `bleak_sigspec` is missing
-- There is a bug in the *xml* file.
-- The format of the `characteristic` is not supported (see: [struct](https://docs.python.org/3/library/struct.html))
-- There is a bug in `get_char_value`
-- The data is not formatted following the *xml* file description.
-
-### Future work: Vendor specific or custom characteristics
-
-To format a characteristic value of a Vendor specific or custom characteristic (not defined in GATT specifications) there is a *Characteristic Presentation Format* Descriptor which defines the format of the Characteristic Value. So if this Descriptor is present it is possible to read it and get the characteristic value  format, exponent, unit, name space and description.
-
-To add custom characteristics it is possible to write a xml file describing the characteristic and provide a 128 UUID. Then this could be registered in `bleak`/`bleak_sigspec`.
