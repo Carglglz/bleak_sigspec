@@ -47,4 +47,9 @@ Characteristic Name: Temperature, Bytes Value: b'Z\x16', Formatted Value: {'Temp
   'Value': 57.22}}
 ```
 
-See more at  [bleak_sigspec documentation](https://bleak-sigspec.readthedocs.io)
+
+
+### Documentation
+
+See the documentation at  [https://bleak-sigspec.readthedocs.io](https://bleak-sigspec.readthedocs.io)
+
