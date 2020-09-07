@@ -31,11 +31,11 @@ sys.path.insert(0, os.path.abspath('../bleak_sigspec'))
 # -- Project information -----------------------------------------------------
 
 project = 'bleak_sigspec'
-copyright = '2020, Carlos Gil'
-author = 'Carlos Gil'
+copyright = '2020, Carlos G. Gonzalez'
+author = 'Carlos G. Gonzalez'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.0.2'
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
 # the built documents.

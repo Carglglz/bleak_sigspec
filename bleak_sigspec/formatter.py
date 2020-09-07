@@ -45,11 +45,15 @@ def decode_FLOAT_ieee11073(value):
     FLOAT-Type is defined as a 32-bit value with a 24-bit mantissa and an 8-bit exponent.
 
     Special Values:
-        > +INFINITY : [exponent 0, mantissa +(2^23 –2) → 0x007FFFFE]
-        > NaN (Not a Number): [exponent 0, mantissa +(2^23 –1) → 0x007FFFFF]
-        > NRes (Not at this Resolution) [exponent 0, mantissa –(2^23) → 0x00800000]
-        > Reserved for future use [exponent 0, mantissa –(2^23–1) → 0x00800001]
-        > – INFINITY [exponent 0, mantissa –(2^23 –2) → 0x00800002]
+        * +INFINITY : [exponent 0, mantissa +(2^23 –2) → 0x007FFFFE]
+
+        * NaN *(Not a Number)*: [exponent 0, mantissa +(2^23 –1) → 0x007FFFFF]
+
+        * NRes *(Not at this Resolution)*: [exponent 0, mantissa –(2^23) → 0x00800000]
+
+        * Reserved for future use : [exponent 0, mantissa –(2^23–1) → 0x00800001]
+
+        * – INFINITY : [exponent 0, mantissa –(2^23 –2) → 0x00800002]
     """
     special_values = {2**23-2: '+INFINITY', 2**23-1: 'NaN',  -2**23: 'NRes',
                       -(2**23-1): 'Reserved for future use',
@@ -78,7 +82,7 @@ def decode_FLOAT_ieee11073(value):
 
 
 def twos_comp(val, bits):
-    """compute the 2's complement of int value val
+    """returns the 2's complement of int value val with n bits
 
     - https://stackoverflow.com/questions/1604464/twos-complement-in-python"""
 
@@ -106,7 +110,7 @@ def encode_SFLOAT_ieee11073(value, precision=1, debug=False):
 
 
 def twos_comp_dec(val, bits):
-    """compute the 2's complement of int value val
+    """returns the signed int value from the 2's complement val with n bits
 
     - https://stackoverflow.com/questions/1604464/twos-complement-in-python"""
 
@@ -123,11 +127,15 @@ def decode_SFLOAT_ieee11073(value):
     Each is in twos- complement form.
 
     Special Values:
-        > +INFINITY : [exponent 0, mantissa +(2^11 –2) → 0x07FE]
-        > NaN (Not a Number): [exponent 0, mantissa +(2^11 –1) → 0x07FF]
-        > NRes (Not at this Resolution) [exponent 0, mantissa –(2^11) → 0x0800]
-        > Reserved for future use [exponent 0, mantissa –(2^11 –1) → 0x0801]
-        > – INFINITY [exponent 0, mantissa –(2^11 –2) → 0x0802]
+        * +INFINITY : [exponent 0, mantissa +(2^11 –2) → 0x07FE]
+
+        * NaN *(Not a Number)*: [exponent 0, mantissa +(2^11 –1) → 0x07FF]
+
+        * NRes *(Not at this Resolution)*: [exponent 0, mantissa –(2^11) → 0x0800]
+
+        * Reserved for future use: [exponent 0, mantissa –(2^11 –1) → 0x0801]
+
+        * – INFINITY : [exponent 0, mantissa –(2^11 –2) → 0x0802]
     """
     special_values = {2**11-2: '+INFINITY', 2**11-1: 'NaN',  -2**11: 'NRes', -
                       (2**11-1): 'Reserved for future use', -(2**11-2): '–INFINITY'}
@@ -152,11 +160,19 @@ def decode_SFLOAT_ieee11073(value):
 
 
 def encode_nibbles(val, val2):
-    """This needs two values to encode two nibbles as a byte
-    Nibble:   MSN  LSN
-    Byte:   0b0000 0000
-    Indexes:  7654 3210
-    Values:   val2 val
+    """Encode two values as two nibbles in a byte
+
+    Specs:
+        * **Nibble**:   MSN  LSN
+
+        * **Byte**:   0b0000 0000
+
+        * **Indexes**:  7654 3210
+
+        * **Values**:   val2 val
+
+    Requirement:
+        * Only values (0-15) allowed
     """
     assert any([v > 2**4 - 1 for v in [val, val2]]) is False, 'Nibble value too big, only values (0-15) allowed'
 
@@ -166,7 +182,13 @@ def encode_nibbles(val, val2):
 
 
 def decode_nibbles(bb):
-    """This needs 1 byte to decode two nibbles"""
+    """Decode 1 byte as two nibbles (ints)
+
+    Specs:
+        **bb_len** : 1
+
+        **returns**: (int, int)
+    """
     fullbyte, = struct.unpack('B', bb)
     # shift 4 bits to the right
     val2 = fullbyte >> 4
@@ -178,8 +200,11 @@ def decode_nibbles(bb):
 def encode_2_uint12(val, val2):
     """
     Format two values as two unsigned 12 bit integers
-    2_uint12 len: 3 bytes
-    Format string: 'o'
+
+    Specs:
+        **2_uint12 len**: 3 bytes
+
+        **Format string**: 'o'
     """
     full3bytes = (val << 12) + val2
     return full3bytes.to_bytes(3, 'little', signed=False)
@@ -188,8 +213,12 @@ def encode_2_uint12(val, val2):
 def decode_2_uint12(bb):
     """
     Decode 3 bytes as two unsigned 12 bit integers
-    2_uint12 len: 3 bytes
-    Format string: 'o'
+
+    Specs:
+        **2_uint12 len**: 3 bytes
+
+        **Format string**: 'o'
+
     """
     _bb_int = int.from_bytes(bb, byteorder='little', signed=False)
     val = _bb_int >> 12
@@ -200,8 +229,11 @@ def decode_2_uint12(bb):
 def encode_uint24(val):
     """
     Format a value as a unsigned 24 bit integer
-    uint24 len: 3 bytes
-    Format string: 'k'
+
+    Specs:
+        * **uint24 len**: 3 bytes
+
+        * **Format string**: 'k'
     """
     return val.to_bytes(3, 'little', signed=False)
 
@@ -209,8 +241,11 @@ def encode_uint24(val):
 def decode_uint24(bb):
     """
     Decode 3 bytes as a unsigned 24 bit integer
-    uint24 len: 3 bytes
-    Format string: 'k'
+
+    Specs:
+        * **uint24 len**: 3 bytes
+
+        * **Format string**: 'k'
     """
     return int.from_bytes(bb, byteorder='little', signed=False)
 
@@ -218,8 +253,11 @@ def decode_uint24(bb):
 def encode_sint24(val):
     """
     Format a value as a signed 24 bit integer
-    uint24 len: 3 bytes
-    Format string: 'K'
+
+    Specs:
+        * **sint24 len**: 3 bytes
+
+        * **Format string**: 'K'
     """
     return val.to_bytes(3, 'little', signed=True)
 
@@ -227,8 +265,11 @@ def encode_sint24(val):
 def decode_sint24(bb):
     """
     Decode 3 bytes as a signed 24 bit integer
-    uint24 len: 3 bytes
-    Format string: 'K'
+
+    Specs:
+        * **sint24 len**: 3 bytes
+
+        * **Format string**: 'K'
     """
     return int.from_bytes(bb, byteorder='little', signed=True)
 
@@ -236,8 +277,11 @@ def decode_sint24(bb):
 def encode_uint40(val):
     """
     Format a value as an unsigned 40 bit integer
-    uint40 len: 5 bytes
-    Format string: 'j'
+
+    Specs:
+        * **uint40 len**: 5 bytes
+
+        * **Format string**: 'j'
     """
     return val.to_bytes(5, 'little', signed=False)
 
@@ -245,8 +289,11 @@ def encode_uint40(val):
 def decode_uint40(bb):
     """
     Decode 5 bytes as an unsigned 40 bit integer
-    uint40 len: 5 bytes
-    Format string: 'j'
+
+    Specs:
+        * **uint40 len**: 5 bytes
+
+        * **Format string**: 'j'
     """
     return int.from_bytes(bb, byteorder='little')
 
@@ -254,8 +301,11 @@ def decode_uint40(bb):
 def encode_uint48(val):
     """
     Format a value as an unsigned 48 bit integer
-    uint48 len: 6 bytes
-    Format string: 'J'
+
+    Specs:
+        * **uint48 len**: 6 bytes
+
+        * **Format string**: 'J'
     """
     return val.to_bytes(6, 'little', signed=False)
 
@@ -263,8 +313,11 @@ def encode_uint48(val):
 def decode_uint48(bb):
     """
     Decode 6 bytes as an unsigned 48 bit integer
-    uint48 len: 6 bytes
-    Format string: 'J'
+
+    Specs:
+        * **uint48 len**: 6 bytes
+
+        * **Format string**: 'J'
     """
     return int.from_bytes(bb, byteorder='little', signed=False)
 
@@ -272,8 +325,11 @@ def decode_uint48(bb):
 def encode_uint128(val):
     """
     Format a value as a unsigned 128 bit integer
-    uint128 len: 16 bytes
-    Format string: 'z'
+
+    Specs:
+        * **uint128 len**: 16 bytes
+
+        * **Format string**: 'z'
     """
     return val.to_bytes(16, 'little', signed=False)
 
@@ -281,13 +337,20 @@ def encode_uint128(val):
 def decode_uint128(bb):
     """
     Decode 16 bytes as a unsigned 128 bit integer
-    uint128 len: 16 bytes
-    Format string: 'z'
+
+    Specs:
+        * **uint128 len**: 16 bytes
+
+        * **Format string**: 'z'
     """
     return int.from_bytes(bb, byteorder='little', signed=False)
 
 
 class SuperStruct:
+    """
+    Struct class Bluetooth SIG compliant
+    """
+
     def __init__(self):
         self._version = 'Struct class Bluetooth SIG compliant'
         self.spec_formats = ['F', 'S', 'Y', 'j', 'J', 'k', 'K', 'z', 'o']
@@ -305,6 +368,9 @@ class SuperStruct:
         return(self._version)
 
     def unpack(self, fmt, bb):
+        """
+        Unpack values from bytes(bb) following the specified format (fmt)
+        """
         if any([f in self.spec_formats for f in fmt]):
             values, index = self._get_all_index_bytes(fmt, bb)
             return tuple(values)
@@ -313,6 +379,9 @@ class SuperStruct:
             return struct.unpack(fmt, bb)
 
     def pack(self, fmt, *args):
+        """
+        Pack values (*args*) into bytes following the specified format (fmt)
+        """
         assert len(fmt) == len([*args]), 'pack expected {} items for packing (got {})'.format(len(fmt), len([*args]))
         if any([f in self.spec_formats for f in fmt]):
             # values, index = self._get_all_index_bytes(fmt, *args)
@@ -547,4 +616,7 @@ class SuperStruct:
         return int(size_value)
 
     def calcsize(self, fmt):
+        """
+        Return the size in bytes of a string format, same as ``struct.calcsize``
+        """
         return self._get_overall_size(fmt)

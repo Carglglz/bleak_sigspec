@@ -2,7 +2,7 @@
 Limitations
 ===========
 
-``get_char_value may fail``, or return unexpected results due to the following reasons:
+``get_char_value`` may fail, or return unexpected results due to the following reasons:
 
 - The characteristic does not exist in ``bleak`` or the xml file in ``bleak_sigspec`` is missing
 - There is a bug in the xml file.
