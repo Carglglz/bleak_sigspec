@@ -11,6 +11,7 @@ from bleak.uuids import uuidstr_to_str
 from bleak_sigspec.formatter import SuperStruct
 from bleak.backends.characteristic import BleakGATTCharacteristic
 import bleak_sigspec
+import textwrap
 
 
 CHARS_XML_DIR = os.path.join(bleak_sigspec.__path__[0],
@@ -169,6 +170,11 @@ class CHAR_XML:
         self.name = None
         self.char_type = None
         self.uuid = None
+        self.abstract = None
+        self.summary = None
+        self.description = None
+        self.info_text = None
+        self.note = None
         self.xml_tags = {}
         self.fields = {}
         self._actual_field = None
@@ -176,8 +182,86 @@ class CHAR_XML:
         self._actual_bitfield = None
         self._actual_bit = None
         self._nr = 0
+        self._metadata_string = ''
+        self._wrapper = textwrap.TextWrapper(initial_indent=" "*4,)
         self._get_data()
         self._get_fields()
+
+    def __repr__(self):
+        self._metadata_string = ''
+        self._metadata_string += 'Characteristic Metadata:\n'
+        self._metadata_string += '━'*50 + '\n'
+        self._pretty_print_metadata()
+        self._metadata_string += '━'*50 + '\n'
+        return self._metadata_string
+
+    def _get_metadata_string(self):
+        self._metadata_string = ''
+        self._metadata_string += 'Characteristic Metadata:\n'
+        self._metadata_string += '━'*50 + '\n'
+        self._pretty_print_metadata()
+        self._metadata_string += '━'*50 + '\n'
+        return self._metadata_string
+
+    def _pretty_print_metadata(self):
+        self._print_wrp('- NAME: {}'.format(self.name))
+        self._print_wrp('- UUID: {}'.format(self.uuid))
+        self._print_wrp('- ABSTRACT: {}'.format(self.abstract),
+                        indent=4 + len('- ABSTRACT: '))
+        self._print_wrp('- SUMMARY: {}'.format(self.summary),
+                        indent=4 + len('- SUMMARY: '))
+        self._print_wrp('- FIELDS:')
+        for field in self.fields:
+            self._print_wrp('- {}: '.format(field), f_indent=8)
+            for key in self.fields[field]:
+                if key == 'BitField':
+                    self._print_wrp('- {}:'.format(key), f_indent=12)
+                    for bit in self.fields[field][key]:
+                        self._print_wrp('- {}: '.format(bit), f_indent=16)
+                        for keybit in self.fields[field][key][bit].keys():
+                            if keybit == 'Enumerations':
+                                self._print_wrp(
+                                    '- {}:'.format(keybit), f_indent=20)
+                                for k, v in self.fields[field][key][bit][keybit].items():
+
+                                    self._print_wrp(
+                                        '- {}: {}'.format(k, v), f_indent=24)
+                            else:
+                                self._print_wrp(
+                                    '- {}: {}'.format(keybit, self.fields[field][key][bit][keybit]), f_indent=20)
+                else:
+                    if key == 'Enumerations':
+                        if 'BitField' not in self.fields[field].keys():
+                            self._print_wrp('- {}:'.format(key), f_indent=12)
+                            for k, v in self.fields[field][key].items():
+
+                                self._print_wrp(
+                                    '- {}: {}'.format(k, v), f_indent=16)
+                    else:
+                        self._print_wrp(
+                            '- {}: {}'.format(key, self.fields[field][key]), f_indent=12, indent=12)
+
+        self._print_wrp('- TYPE: {}'.format(self.char_type))
+        self._print_wrp('- INFO TEXT: {}'.format(self.info_text),
+                        indent=4 + len('- INFO TEXT: '))
+        self._print_wrp('- DESCRIPTION: {}'.format(self.description),
+                        indent=4 + len('- DESCRIPTION: '))
+        self._print_wrp('- NOTE: {}'.format(self.note),
+                        indent=4 + len('- NOTE: '))
+
+    def _print_wrp(self, text, mg=3, f_indent=4, indent=0,
+                   f_indent_char='', r_indent_char=' ', s_indent=' '):
+        try:
+            columns, rows = os.get_terminal_size(0)
+        except Exception as e:
+            columns = 143
+        if f_indent_char != '':
+            f_indent += -1
+        self._wrapper.initial_indent = f_indent_char + r_indent_char * f_indent
+        self._wrapper.subsequent_indent = s_indent + ' ' * indent
+        self._wrapper.width = columns-mg
+        # print('\n'.join(self._wrapper.wrap(text)))
+        self._metadata_string += '\n'.join(self._wrapper.wrap(text)) + '\n'
 
     def _get_data(self):
         for val in self._root.iter():
@@ -191,6 +275,31 @@ class CHAR_XML:
                     self.name = self.char_metadata["name"]
                     self.char_type = self.char_metadata["type"]
                     self.uuid = self.char_metadata["uuid"]
+                if val.tag == 'Summary':
+                    if hasattr(val.text, 'strip'):
+                        self.summary = val.text.strip()
+                    else:
+                        self.summary = val.text
+                if val.tag == 'Description':
+                    if hasattr(val.text, 'strip'):
+                        self.description = val.text.strip()
+                    else:
+                        self.description = val.text
+                if val.tag == 'InformativeText':
+                    if hasattr(val.text, 'strip'):
+                        self.info_text = val.text.strip()
+                    else:
+                        self.info_text = val.text
+                if val.tag == 'Note':
+                    if hasattr(val.text, 'strip'):
+                        self.note = val.text.strip()
+                    else:
+                        self.note = val.text
+                if val.tag == 'p':
+                    if hasattr(val.text, 'strip'):
+                        if self.note is None:
+                            self.note = ''
+                        self.note += val.text.strip() + '\n'
             except Exception as e:
                 print(traceback.format_exc())
 

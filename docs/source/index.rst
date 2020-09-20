@@ -69,6 +69,38 @@ Usage
     'Value': 57.22}}
 
 
+*Example:* See characteristic metadata
+
+.. code-block:: python
+
+    >>> from bleak_sigspec.utils import get_xml_char
+    >>> temp = get_xml_char('Temperature')
+    >>> temp
+    Characteristic Metadata:
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    - NAME: Temperature
+    - UUID: 2A6E
+    - ABSTRACT: None
+    - SUMMARY: None
+    - FIELDS:
+        - Temperature:
+            - InformativeText: Unit is in degrees Celsius with a resolution of 0.01 degrees Celsius
+            - Requirement: Mandatory
+            - Format: sint16
+            - Ctype: h
+            - Unit_id: org.bluetooth.unit.thermodynamic_temperature.degree_celsius
+            - Quantity: thermodynamic temperature
+            - Unit: degree celsius
+            - Symbol: °C
+            - DecimalExponent: -2
+    - TYPE: org.bluetooth.characteristic.temperature
+    - INFO TEXT: Unit is in degrees Celsius with a resolution of 0.01 degrees Celsius
+    - DESCRIPTION: None
+    - NOTE: None
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    >>>
+
 Contribute
 ----------
 
