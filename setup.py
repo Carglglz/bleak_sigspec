@@ -29,4 +29,4 @@ setup(name='bleak_sigspec',
       packages=['bleak_sigspec'],
       zip_safe=False,
       include_package_data=True,
-      install_requires=['bleak>=0.7.1'])
+      install_requires=['bleak>=0.8.0'])
