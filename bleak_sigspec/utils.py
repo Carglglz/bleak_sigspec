@@ -556,7 +556,11 @@ def _unpack_data(ctype, data):
     Unpack 'data' bytes with 'ctype' equivalent format
     """
     if ctype == "utf8":
-        return data.decode("utf8")
+        if hasattr(data, 'decode'):
+            return data.decode("utf8")
+        else:
+            data = str(data).decode("utf8")
+            return data
     else:
         (data,) = sup_struct.unpack(ctype, data)
         return data
