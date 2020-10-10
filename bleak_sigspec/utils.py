@@ -559,7 +559,7 @@ def _unpack_data(ctype, data):
         if hasattr(data, 'decode'):
             return data.decode("utf8")
         else:
-            data = str(data).decode("utf8")
+            data = bytes(data).decode("utf8")
             return data
     else:
         (data,) = sup_struct.unpack(ctype, data)
