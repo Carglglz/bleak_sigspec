@@ -382,14 +382,18 @@ class SuperStruct:
         """
         Pack values (*args*) into bytes following the specified format (fmt)
         """
-        assert len(fmt) == len([*args]), 'pack expected {} items for packing (got {})'.format(len(fmt), len([*args]))
-        if any([f in self.spec_formats for f in fmt]):
-            # values, index = self._get_all_index_bytes(fmt, *args)
-            # return tuple(values)
-            return self._put_all_index_bytes(fmt, *args)
+        if fmt != 'utf8':
+            assert len(fmt) == len([*args]), 'pack expected {} items for packing (got {})'.format(len(fmt), len([*args]))
+            if any([f in self.spec_formats for f in fmt]):
+                # values, index = self._get_all_index_bytes(fmt, *args)
+                # return tuple(values)
+                return self._put_all_index_bytes(fmt, *args)
 
+            else:
+                return struct.pack(fmt, *args)
         else:
-            return struct.pack(fmt, *args)
+            data = [*args][0]
+            return data.encode('utf8')
 
     def _get_all_index_bytes(self, fmt_string, bb):
         indexes = []

@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='bleak_sigspec',
-      version='0.0.3',
+      version='0.0.4',
       description='Bleak SIG Bluetooth Low Energy Characteristics Specification Formatter',
       long_description=readme(),
       long_description_content_type='text/markdown',
