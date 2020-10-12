@@ -14,3 +14,8 @@ characteristic value  format, exponent, unit, name space and description.
 To add custom characteristics it is possible to write a xml file describing
 the characteristic and provide a 128 UUID. Then this could be registered
 in ``bleak/bleak_sigspec``.
+
+
+Added in bleak_sigspec 0.0.4:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Nordic UART TX, Nordic UART RX characteristics.
